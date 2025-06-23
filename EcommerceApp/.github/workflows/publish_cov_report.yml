@@ -1,0 +1,26 @@
+name: publish_cov_report
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      - run: dotnet restore
+      - run: dotnet build --no-restore --configuration Release
+      - run: dotnet test --no-build --configuration Release --collect:"XPlat Code Coverage"
+      - run: dotnet tool install -g dotnet-reportgenerator-globaltool
+      - run: reportgenerator "-reports:**/TestResults/*/coverage.cobertura.xml" "-targetdir:coverage-report" -reporttypes:Html
+      - uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./coverage-report
+          publish_branch: gh-pages
+          force_orphan: true 

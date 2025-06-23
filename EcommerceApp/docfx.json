@@ -1,0 +1,36 @@
+{
+  "metadata": [
+    {
+      "src": [
+        {
+          "files": ["src/EcommerceApp.Api/EcommerceApp.Api.csproj"]
+        }
+      ],
+      "dest": "api"
+    }
+  ],
+  "build": {
+    "content": [
+      {
+        "files": ["api/**.yml", "api/index.md"]
+      },
+      {
+        "files": ["articles/**.md", "toc.yml"]
+      },
+      {
+        "files": ["*.md"]
+      }
+    ],
+    "resource": [
+      {
+        "files": ["images/**"]
+      }
+    ],
+    "overwrite": [
+      {
+        "files": ["apidoc/**.md"]
+      }
+    ],
+    "dest": "_site"
+  }
+} 

@@ -1,0 +1,60 @@
+@startuml
+
+' Interfaces Models
+interface IAddressInfo {
+  +string Street
+  +string Address
+  +string City
+  +string PostalCode
+  +string PhoneNumber
+}
+
+interface ICard {
+  +string CardNumber
+  +string Name
+  +DateTime ValidTo
+}
+
+interface ICartItem {
+  +string ProductId
+  +int Quantity
+  +double Price
+}
+
+' Interfaces Services
+interface ICartService {
+  +double Total()
+  +IEnumerable<ICartItem> Items()
+}
+
+interface IPaymentService {
+  +bool Charge(double total, ICard card)
+}
+
+interface IShipmentService {
+  +void Ship(IAddressInfo info, IEnumerable<ICartItem> items)
+}
+
+interface IDiscountService {
+  +double ApplyDiscount(double total)
+}
+
+' Controlador principal
+class CartController {
+  -ICartService _cartService
+  -IPaymentService _paymentService
+  -IShipmentService _shipmentService
+  -IDiscountService _discountService
+  +CheckOut(ICard card, IAddressInfo addressInfo) : string
+}
+
+CartController --> ICartService
+CartController --> IPaymentService
+CartController --> IShipmentService
+CartController --> IDiscountService
+ICartService --> ICartItem
+IPaymentService --> ICard
+IShipmentService --> IAddressInfo
+IShipmentService --> ICartItem
+
+@enduml 
